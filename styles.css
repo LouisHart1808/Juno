@@ -1,0 +1,238 @@
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* fallback in case JS hasn’t run yet */
+}
+/* Neon curved connectors overlay */
+#conn-svg,
+#conn-nodes {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+main, header, section { position: relative; z-index: 4; }
+.neon-path { fill: none; stroke: rgba(0,229,255,.8); stroke-width: 2; filter: drop-shadow(0 0 6px rgba(0,229,255,.6)) drop-shadow(0 0 14px rgba(0,229,255,.25)); }
+.neon-path.alt { stroke: rgba(255,43,214,.9); filter: drop-shadow(0 0 6px rgba(255,43,214,.7)) drop-shadow(0 0 14px rgba(255,43,214,.3)); }
+.neon-dash { stroke-dasharray: 6 10; animation: dash-move 6s linear infinite; }
+@keyframes dash-move { to { stroke-dashoffset: -200; } }
+:root{
+  --bg: #070514;
+  --panel: rgba(13,9,30,.6);
+  --neon: #00e5ff;
+  --hot: #ff2bd6;
+  --acid: #b8ff2b;
+}
+html, body { height: 100%; }
+body { overflow-x: hidden; }
+body { background: radial-gradient(1200px 800px at 70% -10%, rgba(255,43,214,.15), transparent 40%), var(--bg); }
+/* Glass card */
+.glass { background: var(--panel); backdrop-filter: blur(10px); box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+/* Neon text */
+.neon { text-shadow: 0 0 8px rgba(0,229,255,.7), 0 0 18px rgba(0,229,255,.35); }
+.scanline::after { content:""; position:absolute; inset:0; background: repeating-linear-gradient(to bottom, transparent 0 2px, rgba(255,255,255,.02) 2px 4px); pointer-events:none; }
+/* Fix Tailwind preflight for full-bleed canvas */
+#bg { position: fixed; inset: 0; z-index: -1; display:block; }
+
+/* Dedicated canvas for flying sparks */
+#sparks-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 3;
+  mix-blend-mode: screen;
+}
+/* Fixed full-viewport FX canvases (under SVG connectors, above 3D bg) */
+#fx-lines,
+#fx-trails,
+#fx-glow {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  display: block;
+}
+#fx-lines { z-index: 0; }
+#fx-trails { z-index: 1; mix-blend-mode: screen; }
+#fx-glow   { z-index: 2; mix-blend-mode: screen; }
+
+/* Smooth scroll for anchor links */
+html { scroll-behavior: smooth; }
+
+/* Neon navbar underline + glow */
+.nav-link { position: relative; display: inline-block; padding-bottom: 2px; transition: color .25s ease, opacity .25s ease; }
+.nav-link::after {
+  content: "";
+  position: absolute; left: 0; bottom: -2px; height: 2px; width: 0%;
+  background: linear-gradient(90deg, var(--neon), #7afcff 50%, var(--hot));
+  box-shadow: 0 0 8px var(--neon), 0 0 16px rgba(0,229,255,.6);
+  transition: width .28s ease;
+}
+.nav-link:hover::after { width: 100%; }
+.nav-link.active { color: #a7f3ff; text-shadow: 0 0 8px rgba(0,229,255,.9), 0 0 18px rgba(0,229,255,.5); }
+.nav-link.active::after { width: 100%; }
+
+/* Fixed header glass + neon border on scroll (always visible) */
+.sticky-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 9999;
+  backdrop-filter: blur(8px);
+  background: linear-gradient(180deg, rgba(10,8,24,.55), rgba(10,8,24,.35));
+  border-bottom: 1px solid transparent;
+  transition: border-color .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.sticky-header.scrolled {
+  border-color: rgba(0,229,255,.25);
+  box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 24px rgba(0,229,255,.12);
+  background: linear-gradient(180deg, rgba(10,8,24,.72), rgba(10,8,24,.45));
+}
+
+/* Collapsible panel for Education */
+.education-toggle { cursor: pointer; }
+.collapsible { max-height: 0; overflow: hidden; transition: max-height .4s ease; }
+.collapsible.open { max-height: 900px; }
+.chev { display:inline-block; transform: rotate(0deg); transition: transform .25s ease; }
+.chev.open { transform: rotate(90deg); }
+
+/* Cyberpunk text accents */
+.glow-cyan { color: var(--neon); text-shadow: 0 0 8px rgba(0,229,255,.7), 0 0 18px rgba(0,229,255,.35); }
+.glow-fuchsia { color: var(--hot); text-shadow: 0 0 8px rgba(255,43,214,.7), 0 0 18px rgba(255,43,214,.35); }
+.glow-acid { color: var(--acid); text-shadow: 0 0 8px rgba(184,255,43,.6), 0 0 18px rgba(184,255,43,.3); }
+.chips > span { display:inline-block; border:1px solid rgba(0,229,255,.25); padding:.25rem .5rem; border-radius:.6rem; margin:.125rem; background: rgba(13,9,30,.45); }
+
+/* Tech stack aesthetics */
+.stack-card { border: 1px solid rgba(0,229,255,.12); background: linear-gradient(180deg, rgba(13,9,30,.55), rgba(13,9,30,.35)); }
+.stack { display:flex; flex-wrap: wrap; margin-top:.5rem; }
+.pill { display:inline-flex; align-items:center; gap:.45rem; padding:.38rem .6rem; border:1px solid rgba(0,229,255,.28); border-radius:.7rem; margin:.18rem; background: rgba(13,9,30,.45); box-shadow: 0 0 12px rgba(0,229,255,.06) inset; }
+.pill:hover { border-color: rgba(255,43,214,.35); box-shadow: 0 0 18px rgba(255,43,214,.08) inset; }
+.logo { width:1.1rem; height:1.1rem; display:inline-block; }
+/* Improve visibility for dark logos (e.g., Flask, Three.js) */
+.logo-dark { filter: invert(1) contrast(1.2) brightness(1.3); }
+/* Fallback monogram badge shown only if Iconify fails to load an icon */
+.fallback-logo { width:1.1rem; height:1.1rem; display:inline-flex; align-items:center; justify-content:center; font-size:.65rem; border:1px solid rgba(0,229,255,.35); border-radius:.25rem; padding:0 .2rem; background: rgba(255,43,214,.12); color:#e0faff; line-height:1; }
+/* Hide fallback badge when SVG is injected by Iconify */
+.logo:has(svg) + .fallback-logo { display:none; }
+.section-sub { font-size:.9rem; opacity:.85; }
+
+/* Colored brand badges behind monochrome icons */
+.badge { display:inline-flex; align-items:center; justify-content:center; width:1.35rem; height:1.35rem; border-radius:.4rem; margin-right:.25rem; box-shadow: 0 0 10px rgba(0,229,255,.12), inset 0 0 10px rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.08); }
+.brand-streamlit { background:#FF4B4B; }
+.brand-outsystems { background:#E83E3E; }
+.brand-xgboost { background:#F28E2B; }
+.brand-seaborn { background:#4C72B0; }
+.brand-spark { background:#E25A1C; }
+.brand-powerbi { background:#F2C811; }
+.brand-ga4 { background:#FFA500; }
+.brand-kafka { background:#111; }
+.brand-plotly { background:#3f4f75; }
+.brand-vercel { background:#000; }
+.brand-kong { background:#33A0A3; }
+.brand-mlflow { background:#0194E2; }
+.brand-dbt { background:#FF694B; }
+.brand-spacy { background:#09A3D5; }
+.brand-nltk { background:#2E7D32; }
+.brand-gensim { background:#6A1B9A; }
+.brand-folium { background:#5EAF5B; }
+/* Top 8 skills row */
+.top8-wrap { margin-top:.75rem; }
+.pill.top8 { padding:.5rem .75rem; border-color: rgba(0,229,255,.45); box-shadow: 0 0 16px rgba(0,229,255,.10) inset, 0 0 12px rgba(0,229,255,.08); }
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0,229,255,.45); transform: translateZ(0) scale(1); }
+  70% { box-shadow: 0 0 0 10px rgba(0,229,255,0); transform: translateZ(0) scale(1.03); }
+  100% { box-shadow: 0 0 0 0 rgba(0,229,255,0); transform: translateZ(0) scale(1); }
+}
+.pill.top8:hover { animation: pulse 1s ease-out; }
+.brand-python { background:#3776AB; }
+.brand-tableau { background:#E97627; }
+.brand-sql { background:#00618A; }
+.brand-pandas { background:#130754; }
+.brand-sklearn { background:#F89939; }
+.brand-pytorch { background:#EE4C2C; }
+.brand-react { background:#61DAFB; }
+.brand-javascript { background:#F7DF1E; }
+.brand-vue { background:#42B883; }
+.brand-d3 { background:#F26924; }
+.rank { display:inline-flex; align-items:center; justify-content:center; width:1.1rem; height:1.1rem; border-radius:999px; font-size:.68rem; font-weight:700; margin-right:.35rem; background: rgba(0,229,255,.18); border:1px solid rgba(0,229,255,.45); box-shadow: 0 0 10px rgba(0,229,255,.12); }
+
+/* --- Upgraded hologram badge --- */
+.holo { position:relative; width:48px; height:48px; border-radius:12px; display:inline-flex; align-items:center; justify-content:center; background: radial-gradient(120% 120% at 20% 20%, rgba(0,229,255,.22), rgba(255,43,214,.12)); border:1px solid rgba(0,229,255,.45); box-shadow: inset 0 0 24px rgba(0,229,255,.22), 0 0 28px rgba(0,229,255,.22); transform-style: preserve-3d; will-change: transform, box-shadow; transition: transform .18s ease, box-shadow .18s ease; }
+.holo::before { content:""; position:absolute; inset:-3px; border-radius:14px; background: conic-gradient(from 0deg, rgba(0,229,255,.18), rgba(255,43,214,.18), rgba(184,255,43,.12), rgba(0,229,255,.18)); filter: blur(10px); opacity:.7; pointer-events:none; }
+.holo i { font-style:normal; transform: translateZ(24px); font-size: 18px; text-shadow: 0 0 10px rgba(255,255,255,.35); opacity:.9; }
+
+/* --- Moving nodes + packets on connectors --- */
+.neon-node { fill: #00e5ff; opacity:.9; filter: drop-shadow(0 0 6px rgba(0,229,255,.9)) drop-shadow(0 0 12px rgba(0,229,255,.5)); }
+.neon-node.alt { fill: #ff2bd6; filter: drop-shadow(0 0 6px rgba(255,43,214,.9)) drop-shadow(0 0 12px rgba(255,43,214,.5)); }
+.packet { fill: #b8ff2b; opacity:.95; filter: drop-shadow(0 0 8px rgba(184,255,43,.8)) drop-shadow(0 0 16px rgba(184,255,43,.4)); }
+
+/* 3D Hologram near hero title */
+.holo-wrap { perspective: 900px; display:inline-flex; align-items:center; gap:.6rem; }
+.holo-glow { animation: holoGlow 2.4s ease-in-out infinite alternate; }
+@keyframes holoGlow { from { box-shadow: inset 0 0 14px rgba(0,229,255,.12), 0 0 18px rgba(0,229,255,.12); } to { box-shadow: inset 0 0 26px rgba(255,43,214,.18), 0 0 28px rgba(255,43,214,.16); } }
+
+/* Greeting styles */
+#greeting { letter-spacing: .08em; text-transform: uppercase; font-weight: 600; opacity: .85; }
+
+.cyber{position:relative;border:1px solid rgba(0,229,255,.22)}
+.cyber::after{content:"";position:absolute;inset:-2px;border-radius:inherit;border:1px solid rgba(255,43,214,.25);filter:blur(8px);opacity:.5;pointer-events:none}
+
+/* === Neon Card Frames (performance-friendly) === */
+:root{
+  --neon-border-radius: 14px;
+  --neon-border-base: rgba(0,229,255,.28);
+  --neon-border-glow1: rgba(0,229,255,.18);
+  --neon-border-glow2: rgba(255,43,214,.18);
+  --neon-border-glow3: rgba(184,255,43,.14);
+}
+
+/* Utility: apply to any card container (e.g., .glass, .stack-card) */
+.neon-frame{ position:relative; border:1px solid var(--neon-border-base); border-radius: var(--neon-border-radius); }
+
+/* Outer glow ring using a masked gradient so only the border glows */
+.neon-frame::before{ content:""; position:absolute; inset:-2px; border-radius: calc(var(--neon-border-radius) + 2px); pointer-events:none; filter: blur(10px); opacity:.75;
+  background: conic-gradient(from 0deg,
+    var(--neon) 0deg 90deg,
+    var(--hot) 90deg 180deg,
+    var(--acid) 180deg 270deg,
+    var(--neon) 270deg 360deg);
+  /* show only the ring area */
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  padding: 2px; /* ring thickness */
+}
+
+/* Subtle animated sweep accent – lightweight */
+.neon-frame::after{ content:""; position:absolute; inset:0; border-radius: var(--neon-border-radius); pointer-events:none; opacity:.45;
+  background: radial-gradient(120% 60% at -10% -10%, rgba(255,255,255,.18), transparent 40%),
+              radial-gradient(120% 60% at 110% 110%, rgba(255,255,255,.08), transparent 45%);
+  transition: opacity .25s ease;
+}
+.neon-frame:hover::after{ opacity:.65; }
+
+/* Variants – quick recolors via custom properties */
+.neon-frame.cyan{ --neon-border-base: rgba(0,229,255,.35); }
+.neon-frame.fuchsia{ --neon-border-base: rgba(255,43,214,.35); }
+.neon-frame.acid{ --neon-border-base: rgba(184,255,43,.35); }
+
+/* Pulse on focus/active (keyboard + programmatic) */
+.neon-frame:focus-within, .neon-frame.glow-on{ box-shadow: 0 0 0 1px var(--neon-border-base), 0 0 24px var(--neon-border-glow1), 0 0 48px var(--neon-border-glow2); }
+
+/* Motion-reduced users get a static glow */
+@media (prefers-reduced-motion: reduce){
+  .neon-frame::before{ filter: blur(8px); }
+  .neon-frame::after{ display:none; }
+}
+
+/* Convenience: upgrade existing cards without editing HTML (optional) */
+.glass, .stack-card{ border-radius: var(--neon-border-radius); }
+.glass.neon-frame, .stack-card.neon-frame{ /* if class is added, stronger border handled by .neon-frame */ }
+/* Otherwise give a mild default glow so old markup still benefits */
+.glass:not(.neon-frame), .stack-card:not(.neon-frame){ border:1px solid rgba(0,229,255,.18); box-shadow: 0 0 22px rgba(0,229,255,.08) inset; }

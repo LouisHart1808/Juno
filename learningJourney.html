@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Learning Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="styles.css" as="style">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+  <script type="module">
+    import { animate, inView } from "https://cdn.jsdelivr.net/npm/motion@10/+esm";
+    inView("section", ({ target }) => { animate(target, { opacity: [0,1], transform: ["translateY(16px)", "none"] }, { duration: 0.6 }); });
+  </script>
+</head>
+<body class="min-h-screen bg-deep-space text-slate-100 antialiased">
+  <!-- BACKGROUND LAYERS & SPARKS (hooks mirror index.html) -->
+  <canvas id="bg"></canvas>
+  <canvas id="fx-lines" aria-hidden="true"></canvas>
+  <canvas id="fx-trails" aria-hidden="true"></canvas>
+  <canvas id="fx-glow" aria-hidden="true"></canvas>
+  <canvas id="sparks-canvas" aria-hidden="true"></canvas>
+  <svg id="conn-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
+  <svg id="conn-nodes" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
+
+  <!-- HEADER / NAV -->
+  <header class="sticky-header container mx-auto px-6 py-6 flex items-center justify-between">
+    <a href="index.html" class="font-bold tracking-wide">Juno</a>
+    <nav class="flex gap-6 text-sm">
+      <a href="index.html#education" class="nav-link hover:text-cyan-300">Education</a>
+      <a href="index.html#skills" class="nav-link hover:text-cyan-300">Skills</a>
+      <a href="learningJourney.html" class="nav-link hover:text-cyan-300 active">My Learning Journey</a>
+      <a href="projects.html" class="nav-link hover:text-cyan-300">Projects</a>
+    </nav>
+  </header>
+
+  <!-- PAGE TITLE -->
+  <section class="container mx-auto px-6 pt-24 pb-8">
+    <h1 class="text-3xl font-bold flex items-center gap-3 text-slate-100">
+      <span class="iconify" data-icon="mdi:map-marker-path"></span>
+      My Learning Journey
+    </h1>
+    <p class="mt-2 text-slate-200/90 text-sm">A semester-by-semester trail of relevant modules and skills gained.</p>
+  </section>
+
+  <!-- TIMELINE / CONNECTOR ROUTE -->
+  <section class="container mx-auto px-6 pb-24 relative">
+    <!-- central route line -->
+    <div class="route-rail" aria-hidden="true"></div>
+
+    <div class="timeline space-y-10">
+      <!-- Y1S1 (LEFT) -->
+      <div class="timeline-row left">
+        <article id="y1s1" class="semester-card glass neon-frame cyan rounded-2xl p-6 border border-cyan-400/10 relative">
+          <h2 class="text-xl font-semibold flex items-center gap-2"><span class="iconify" data-icon="mdi:calendar-start"></span> Y1S1</h2>
+          <div class="module-grid mt-4 grid grid-cols-1 gap-3">
+            <!-- Module cards-->
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">COR1202 Introductory Statistics</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Foundational statistics linking descriptive measures, probability, sampling distributions and inference. Covers estimation, hypothesis testing and simple linear regression with spreadsheet-based practice.</p>
+                <div class="chips">
+                  <span title="Descriptive Statistics" class="chip"><span class="iconify" data-icon="mdi:chart-bar"></span> Descriptive</span>
+                  <span title="Probability & Distributions" class="chip"><span class="iconify" data-icon="mdi:sigma"></span> Probability</span>
+                  <span title="Sampling & CLT" class="chip"><span class="iconify" data-icon="mdi:database"></span> Sampling</span>
+                  <span title="Confidence Intervals & Tests" class="chip"><span class="iconify" data-icon="mdi:alpha-h-circle"></span> Inference</span>
+                  <span title="Simple Linear Regression" class="chip"><span class="iconify" data-icon="mdi:trending-up"></span> Regression</span>
+                </div>
+              </div>
+            </div>
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">COR1305 Spreadsheet Modelling &amp; Analytics</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Hands-on business modelling in Excel as a decision-support canvas: structure problems, build models, analyse data and risks, and present insights. Includes what-if, optimization with Solver, simulation and basic VBA automation.</p>
+                <div class="chips">
+                  <span class="chip" title="Excel Modelling"><span class="iconify" data-icon="mdi:microsoft-excel"></span> Modelling</span>
+                  <span class="chip" title="What-if & Sensitivity"><span class="iconify" data-icon="mdi:tune"></span> What‑if</span>
+                  <span class="chip" title="Monte Carlo Simulation"><span class="iconify" data-icon="mdi:dice-multiple"></span> Simulation</span>
+                  <span class="chip" title="Optimization with Solver"><span class="iconify" data-icon="mdi:chart-timeline-variant-shimmer"></span> Solver</span>
+                  <span class="chip" title="VBA / Macros"><span class="iconify" data-icon="mdi:auto-fix"></span> VBA</span>
+                  <span class="chip" title="Data Analysis & Visualization"><span class="iconify" data-icon="mdi:chart-line"></span> Analysis</span>
+                </div>
+              </div>
+            </div>
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS111 Introduction to Programming</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Python-first introduction to core programming: variables and types, functions, conditionals, loops, lists and dictionaries, plus basic file I/O. Apply these to solve typical search/transform problems.</p>
+                <div class="chips">
+                  <span class="chip" title="Python Basics"><span class="iconify" data-icon="mdi:language-python"></span> Python</span>
+                  <span class="chip" title="Functions & Parameters"><span class="iconify" data-icon="mdi:function"></span> Functions</span>
+                  <span class="chip" title="Loops & Conditionals"><span class="iconify" data-icon="mdi:repeat"></span> Loops</span>
+                  <span class="chip" title="Lists & Dictionaries"><span class="iconify" data-icon="mdi:table-large"></span> Data Structures</span>
+                  <span class="chip" title="File I/O"><span class="iconify" data-icon="mdi:file-document"></span> File I/O</span>
+                </div>
+              </div>
+            </div>
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS114 Computing Fundamentals</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Survey of computing systems—from hardware & OS to networks—via a hands-on journey using embedded micro:bit devices, event-driven coding and basic networking.</p>
+                <div class="chips">
+                  <span class="chip" title="Hardware/OS Basics"><span class="iconify" data-icon="mdi:chip"></span> Computer Systems</span>
+                  <span class="chip" title="Embedded / micro:bit"><span class="iconify" data-icon="mdi:developer-board"></span> Micro:bit</span>
+                  <span class="chip" title="Event-driven Coding"><span class="iconify" data-icon="mdi:bolt"></span> Event-Driven Coding</span>
+                  <span class="chip" title="Networking Basics"><span class="iconify" data-icon="mdi:lan"></span> Networking</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Y1S2 (RIGHT) -->
+      <div class="timeline-row right">
+        <article id="y1s2" class="semester-card glass neon-frame fuchsia rounded-2xl p-6 border border-fuchsia-400/10 relative">
+          <h2 class="text-xl font-semibold flex items-center gap-2"><span class="iconify" data-icon="mdi:calendar"></span> Y1S2</h2>
+          <div class="module-grid mt-4 grid grid-cols-1 gap-3">
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS112 Data Management</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Relational data management end‑to‑end: model with ER/EER, design logical/physical schemas, normalize, and implement a MySQL database. Write SQL (joins, subqueries) plus stored procedures/triggers and touch on indexing and text search.</p>
+                <div class="chips">
+                  <span class="chip" title="ER / EER Modelling"><span class="iconify" data-icon="mdi:diagram-project"></span> ER/EER</span>
+                  <span class="chip" title="Normalization"><span class="iconify" data-icon="mdi:layers-triple"></span> Normalization</span>
+                  <span class="chip" title="SQL Joins & Subqueries"><span class="iconify" data-icon="mdi:database-search"></span> SQL</span>
+                  <span class="chip" title="Stored Procedures & Triggers"><span class="iconify" data-icon="mdi:code-braces"></span> Procedures</span>
+                  <span class="chip" title="Indexing & Physical Storage"><span class="iconify" data-icon="mdi:magnify"></span> Indexing</span>
+                  <span class="chip" title="Text Search"><span class="iconify" data-icon="mdi:text-recognition"></span> Text Search</span>
+                  <span class="chip" title="MySQL & Workbench"><span class="iconify" data-icon="mdi:elephant"></span> MySQL</span>
+                </div>
+              </div>
+            </div>
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS113 Web App Dev I</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Build database‑driven web apps from scratch: start with HTML structure, then program dynamic pages in PHP (procedural & objects), wire up CRUD to a database, and manage sessions for stateful UX.</p>
+                <div class="chips">
+                  <span class="chip" title="HTML Fundamentals"><span class="iconify" data-icon="mdi:language-html5"></span> HTML</span>
+                  <span class="chip" title="PHP & Server Logic"><span class="iconify" data-icon="mdi:language-php"></span> PHP</span>
+                  <span class="chip" title="Objects & Classes"><span class="iconify" data-icon="mdi:vector-square"></span> OOP</span>
+                  <span class="chip" title="Create/Read/Update/Delete"><span class="iconify" data-icon="mdi:database"></span> CRUD</span>
+                  <span class="chip" title="Forms & Validation"><span class="iconify" data-icon="mdi:form-select"></span> Forms</span>
+                  <span class="chip" title="Sessions & Auth Basics"><span class="iconify" data-icon="mdi:account-key"></span> Sessions</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Y2S1 (LEFT) -->
+      <div class="timeline-row left">
+        <article id="y2s1" class="semester-card glass neon-frame cyan rounded-2xl p-6 border border-cyan-400/10 relative">
+          <h2 class="text-xl font-semibold flex items-center gap-2"><span class="iconify" data-icon="mdi:calendar"></span> Y2S1</h2>
+          <div class="module-grid mt-4 grid grid-cols-1 gap-3">
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">COR1702 Computational Thinking</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Core problem‑solving for computing: abstraction, data structures, algorithms, and Big‑O analysis. Covers recursion/iteration, graphs, greedy & local search heuristics, and Python implementations of classic patterns.</p>
+                <div class="chips">
+                  <span class="chip" title="Algorithms & Big‑O"><span class="iconify" data-icon="mdi:chart-line"></span> Algorithms</span>
+                  <span class="chip" title="Data Structures"><span class="iconify" data-icon="mdi:table-large"></span> Data Structures</span>
+                  <span class="chip" title="Recursion & Iteration"><span class="iconify" data-icon="mdi:repeat"></span> Recursion</span>
+                  <span class="chip" title="Graphs & Search"><span class="iconify" data-icon="mdi:graph"></span> Graphs</span>
+                  <span class="chip" title="Greedy & Local Search"><span class="iconify" data-icon="mdi:magnify-scan"></span> Heuristics</span>
+                  <span class="chip" title="Python Implementation"><span class="iconify" data-icon="mdi:language-python"></span> Python</span>
+                </div>
+              </div>
+            </div>
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS210 Business Process Analysis &amp; Solutioning</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Methodical translation of business change into IT solutions: model As‑Is workflows, analyse bottlenecks, design To‑Be processes, and blueprint solution architectures with impact/viability analysis.</p>
+                <div class="chips">
+                  <span class="chip" title="As‑Is / To‑Be Modelling"><span class="iconify" data-icon="mdi:flowchart"></span> BPMN</span>
+                  <span class="chip" title="Static & Dynamic Analysis"><span class="iconify" data-icon="mdi:chart-timeline-variant"></span> Analysis</span>
+                  <span class="chip" title="Bottleneck & Path Analysis"><span class="iconify" data-icon="mdi:traffic-cone"></span> Bottlenecks</span>
+                  <span class="chip" title="Solution Blueprinting"><span class="iconify" data-icon="mdi:blueprint"></span> Blueprint</span>
+                  <span class="chip" title="Process Innovation"><span class="iconify" data-icon="mdi:lightbulb-on-outline"></span> Innovation</span>
+                </div>
+              </div>
+            </div>
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS211 Interaction Design &amp; Prototyping</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Human‑centred design from observation to evaluation. Build low‑ to high‑fidelity prototypes, run heuristic/lab studies, and communicate results that improve usefulness and usability.</p>
+                <div class="chips">
+                  <span class="chip" title="User Research"><span class="iconify" data-icon="mdi:account-search"></span> Research</span>
+                  <span class="chip" title="Low/High‑Fidelity Prototyping"><span class="iconify" data-icon="mdi:vector-square"></span> Prototyping</span>
+                  <span class="chip" title="Heuristic & Lab Evaluation"><span class="iconify" data-icon="mdi:clipboard-check-outline"></span> Evaluation</span>
+                  <span class="chip" title="UI Design Principles"><span class="iconify" data-icon="mdi:palette-outline"></span> UI Design</span>
+                  <span class="chip" title="Presenting Design Outcomes"><span class="iconify" data-icon="mdi:presentation"></span> Presentation</span>
+                </div>
+              </div>
+            </div>
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS216 Web App Dev II</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Front‑to‑back web engineering: responsive styling, DOM/event programming, REST/JSON, and building with frameworks like Bootstrap & Vue for richer, scalable UX.</p>
+                <div class="chips">
+                  <span class="chip" title="Responsive Styling (CSS)"><span class="iconify" data-icon="mdi:palette-swatch"></span> CSS</span>
+                  <span class="chip" title="JavaScript & DOM"><span class="iconify" data-icon="mdi:code-tags"></span> JS/DOM</span>
+                  <span class="chip" title="APIs & JSON"><span class="iconify" data-icon="mdi:api"></span> REST/JSON</span>
+                  <span class="chip" title="Bootstrap"><span class="iconify" data-icon="mdi:bootstrap"></span> Bootstrap</span>
+                  <span class="chip" title="Vue Framework"><span class="iconify" data-icon="mdi:vuejs"></span> Vue</span>
+                </div>
+              </div>
+            </div>
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS217 Analytics Foundation</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Analytics from the ground up: EDA, data prep & cleaning, clustering and regression, market basket analysis, and Python tooling with Tableau for visual insight.</p>
+                <div class="chips">
+                  <span class="chip" title="EDA & Cleaning"><span class="iconify" data-icon="mdi:broom"></span> EDA</span>
+                  <span class="chip" title="Clustering"><span class="iconify" data-icon="mdi:vector-polyline"></span> Cluster</span>
+                  <span class="chip" title="Multiple Linear Regression"><span class="iconify" data-icon="mdi:chart-scatter-plot"></span> Regression</span>
+                  <span class="chip" title="Market Basket Analysis"><span class="iconify" data-icon="mdi:cart"></span> Assoc. Rules</span>
+                  <span class="chip" title="Python & Tableau"><span class="iconify" data-icon="mdi:language-python"></span> Py/Tableau</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Y2S2 (RIGHT) -->
+      <div class="timeline-row right">
+        <article id="y2s2" class="semester-card glass neon-frame fuchsia rounded-2xl p-6 border border-fuchsia-400/10 relative">
+          <h2 class="text-xl font-semibold flex items-center gap-2"><span class="iconify" data-icon="mdi:calendar"></span> Y2S2</h2>
+          <div class="module-grid mt-4 grid grid-cols-1 gap-3">
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS213 Enterprise Solution Development</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Design and implement enterprise solutions using SOA/MSA: REST services, inter‑process comms (HTTP/AMQP), JSON data transformation, containerised deployment, API gateways and ESB patterns.</p>
+                <div class="chips">
+                  <span class="chip" title="Service‑Oriented Architecture"><span class="iconify" data-icon="mdi:server"></span> SOA</span>
+                  <span class="chip" title="Microservices"><span class="iconify" data-icon="mdi:vector-arrange-above"></span> Microservices</span>
+                  <span class="chip" title="HTTP & AMQP"><span class="iconify" data-icon="mdi:network"></span> IPC</span>
+                  <span class="chip" title="Docker & Deployment"><span class="iconify" data-icon="mdi:docker"></span> Docker</span>
+                  <span class="chip" title="API Gateway / ESB"><span class="iconify" data-icon="mdi:gate"></span> API Gateway</span>
+                  <span class="chip" title="JSON & Transformation"><span class="iconify" data-icon="mdi:code-braces"></span> JSON</span>
+                </div>
+              </div>
+            </div>
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS214 Enterprise Solution Management</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Operate and evolve enterprise systems: monitoring & SLOs, incident/problem management, disaster recovery, and change/release practices including DevOps workflows and dashboards.</p>
+                <div class="chips">
+                  <span class="chip" title="Ops & Monitoring"><span class="iconify" data-icon="mdi:monitor-eye"></span> Monitoring</span>
+                  <span class="chip" title="Incident/Problem Mgmt"><span class="iconify" data-icon="mdi:alert-octagon-outline"></span> Incidents</span>
+                  <span class="chip" title="Change & Release Mgmt"><span class="iconify" data-icon="mdi:arrow-decision"></span> Change</span>
+                  <span class="chip" title="DevOps Tooling"><span class="iconify" data-icon="mdi:infinity"></span> DevOps</span>
+                  <span class="chip" title="DR & Resilience"><span class="iconify" data-icon="mdi:backup-restore"></span> DR</span>
+                  <span class="chip" title="Dashboards & KPIs"><span class="iconify" data-icon="mdi:view-dashboard"></span> Dashboards</span>
+                </div>
+              </div>
+            </div>
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS215 Digital Business: Technologies &amp; Transformation</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Strategies and tech for digital transformation: reimagine business & value chains, reconnect customers, and rebuild orgs using cloud, analytics, AI, IoT, mobile, social & blockchain.</p>
+                <div class="chips">
+                  <span class="chip" title="Digital Strategy"><span class="iconify" data-icon="mdi:chess-queen"></span> Strategy</span>
+                  <span class="chip" title="Cloud & Data Strategy"><span class="iconify" data-icon="mdi:cloud-outline"></span> Cloud/Data</span>
+                  <span class="chip" title="Analytics & AI"><span class="iconify" data-icon="mdi:robot-outline"></span> Analytics/AI</span>
+                  <span class="chip" title="IoT/Mobile/Social/Blockchain"><span class="iconify" data-icon="mdi:antenna"></span> Platforms</span>
+                  <span class="chip" title="Case Studies & Ideation"><span class="iconify" data-icon="mdi:lightbulb-on-outline"></span> Casework</span>
+                </div>
+              </div>
+            </div>
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS450 Text Mining &amp; Language Processing</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Mining knowledge from text: vector space models, TF‑IDF, classification & clustering, topic modelling, sentiment analysis, information extraction and NER; evaluate with precision/recall/F‑score.</p>
+                <div class="chips">
+                  <span class="chip" title="Vector Space & TF‑IDF"><span class="iconify" data-icon="mdi:format-letter-matches"></span> VSM/TF‑IDF</span>
+                  <span class="chip" title="Text Classification"><span class="iconify" data-icon="mdi:shape-square-plus"></span> Classify</span>
+                  <span class="chip" title="Clustering & Topics"><span class="iconify" data-icon="mdi:chart-bell-curve"></span> Topics</span>
+                  <span class="chip" title="Sentiment Analysis"><span class="iconify" data-icon="mdi:emoticon-happy-outline"></span> Sentiment</span>
+                  <span class="chip" title="Information Extraction & NER"><span class="iconify" data-icon="mdi:label-variant-outline"></span> IE/NER</span>
+                  <span class="chip" title="Evaluation Metrics"><span class="iconify" data-icon="mdi:check-decagram"></span> P/R/F1</span>
+                </div>
+              </div>
+            </div>
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS453 Financial Analytics</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Analytics in financial services: time‑series exploration, risk/return (volatility, beta), portfolio optimisation, and retail credit scoring with logistic regression and scorecards.</p>
+                <div class="chips">
+                  <span class="chip" title="Timeseries & Returns"><span class="iconify" data-icon="mdi:chart-timeline-variant"></span> Timeseries</span>
+                  <span class="chip" title="Risk/Return & Beta"><span class="iconify" data-icon="mdi:scale-balance"></span> Risk/Return</span>
+                  <span class="chip" title="Portfolio Optimisation"><span class="iconify" data-icon="mdi:chart-areaspline"></span> Portfolio</span>
+                  <span class="chip" title="Credit Scoring & WOE/IV"><span class="iconify" data-icon="mdi:card-account-details-star-outline"></span> Scorecards</span>
+                  <span class="chip" title="Python/Excel Tooling"><span class="iconify" data-icon="mdi:microsoft-excel"></span> Tooling</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Y3S1 (LEFT) -->
+      <div class="timeline-row left">
+        <article id="y3s1" class="semester-card glass neon-frame cyan rounded-2xl p-6 border border-cyan-400/10 relative">
+          <h2 class="text-xl font-semibold flex items-center gap-2"><span class="iconify" data-icon="mdi:calendar"></span> Y3S1</h2>
+          <div class="module-grid mt-4 grid grid-cols-1 gap-3">
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">CS103 Linear Algebra for Computing Applications</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Linear algebra for computing: vectors/matrices, solving systems and decompositions that power ML. From Gaussian elimination and vector spaces to eigen‑analysis, SVD and least‑squares regression.</p>
+                <div class="chips">
+                  <span class="chip" title="Vectors & Matrices"><span class="iconify" data-icon="mdi:matrix"></span> Vectors/Matrices</span>
+                  <span class="chip" title="Gaussian Elimination"><span class="iconify" data-icon="mdi:function-variant"></span> Elimination</span>
+                  <span class="chip" title="Vector Spaces & Orthogonality"><span class="iconify" data-icon="mdi:axis-arrow"></span> Spaces</span>
+                  <span class="chip" title="Eigenvalues & Eigenvectors"><span class="iconify" data-icon="mdi:sine-wave"></span> Eigen</span>
+                  <span class="chip" title="SVD & PCA"><span class="iconify" data-icon="mdi:chart-bell-curve"></span> SVD/PCA</span>
+                  <span class="chip" title="Least Squares"><span class="iconify" data-icon="mdi:chart-scatter-plot"></span> Least Squares</span>
+                </div>
+              </div>
+            </div>
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">CS420 Introduction to Artificial Intelligence</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Breadth intro to AI across perception, reasoning and decision‑making: Bayes nets and probabilistic reasoning, heuristic search, deep learning for vision/NLP, plus MDPs and reinforcement learning.</p>
+                <div class="chips">
+                  <span class="chip" title="Naïve Bayes & Bayes Nets"><span class="iconify" data-icon="mdi:graph-outline"></span> Bayes Nets</span>
+                  <span class="chip" title="Heuristic Search"><span class="iconify" data-icon="mdi:magnify-scan"></span> Search</span>
+                  <span class="chip" title="Deep Learning for Vision"><span class="iconify" data-icon="mdi:image-filter"></span> Vision</span>
+                  <span class="chip" title="Natural Language Processing"><span class="iconify" data-icon="mdi:text"></span> NLP</span>
+                  <span class="chip" title="Markov Decision Processes"><span class="iconify" data-icon="mdi:state-machine"></span> MDP</span>
+                  <span class="chip" title="Reinforcement Learning"><span class="iconify" data-icon="mdi:robot"></span> RL</span>
+                </div>
+              </div>
+            </div>
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS212 Software Project Management</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Manage and deliver software with agile methods: scrum roles & ceremonies, user stories and estimation, testing & CI, and collaborative delivery with Git/GitHub and C4‑style architecture docs.</p>
+                <div class="chips">
+                  <span class="chip" title="Scrum Framework"><span class="iconify" data-icon="mdi:view-dashboard-outline"></span> Scrum</span>
+                  <span class="chip" title="User Stories & Acceptance Criteria"><span class="iconify" data-icon="mdi:note-edit-outline"></span> User Stories</span>
+                  <span class="chip" title="Agile Estimation"><span class="iconify" data-icon="mdi:timer-sand"></span> Estimation</span>
+                  <span class="chip" title="Testing & TDD"><span class="iconify" data-icon="mdi:test-tube"></span> TDD</span>
+                  <span class="chip" title="CI Pipelines"><span class="iconify" data-icon="mdi:timeline-check"></span> CI/CD</span>
+                  <span class="chip" title="Git, GitHub & PRs"><span class="iconify" data-icon="mdi:source-branch"></span> Git</span>
+                  <span class="chip" title="C4 Diagrams"><span class="iconify" data-icon="mdi:chart-box-outline"></span> C4</span>
+                </div>
+              </div>
+            </div>
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS424 Data Mining &amp; Business Analytics</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">From data prep to knowledge discovery: explore, preprocess and apply core mining methods (classification, clustering, association rules, anomaly detection), and evaluate/visualise results for BI.</p>
+                <div class="chips">
+                  <span class="chip" title="Data Preprocessing"><span class="iconify" data-icon="mdi:broom"></span> Preprocess</span>
+                  <span class="chip" title="Classification"><span class="iconify" data-icon="mdi:shape-square-plus"></span> Classify</span>
+                  <span class="chip" title="Clustering"><span class="iconify" data-icon="mdi:vector-polyline"></span> Cluster</span>
+                  <span class="chip" title="Association Rules"><span class="iconify" data-icon="mdi:link-variant"></span> Assoc. Rules</span>
+                  <span class="chip" title="Anomaly Detection"><span class="iconify" data-icon="mdi:alert-decagram-outline"></span> Anomaly</span>
+                  <span class="chip" title="Evaluation & Visualization"><span class="iconify" data-icon="mdi:chart-areaspline"></span> Evaluate/Viz</span>
+                </div>
+              </div>
+            </div>
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS428 Visual Analytics for Business Intelligence</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Design and build interactive visual analytics: visual variables & design principles, interaction and animation, time‑series/geo/network viz, and dashboards using D3/JS or COTS tools like Tableau.</p>
+                <div class="chips">
+                  <span class="chip" title="Visual Variables & Design"><span class="iconify" data-icon="mdi:palette-outline"></span> Design</span>
+                  <span class="chip" title="Interactive Techniques"><span class="iconify" data-icon="mdi:animation-outline"></span> Interaction</span>
+                  <span class="chip" title="Time‑Series Visualization"><span class="iconify" data-icon="mdi:chart-timeline"></span> Time Series</span>
+                  <span class="chip" title="Geospatial Visualization"><span class="iconify" data-icon="mdi:earth"></span> Geo</span>
+                  <span class="chip" title="Network Graphs"><span class="iconify" data-icon="mdi:graph"></span> Networks</span>
+                  <span class="chip" title="Dashboards"><span class="iconify" data-icon="mdi:view-dashboard"></span> Dashboards</span>
+                  <span class="chip" title="D3.js & JavaScript"><span class="iconify" data-icon="mdi:code-tags"></span> D3/JS</span>
+                  <span class="chip" title="Tableau"><span class="iconify" data-icon="mdi:table"></span> Tableau</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+      <!-- Y3S2 (RIGHT) -->
+      <div class="timeline-row right">
+        <article id="y3s2" class="semester-card glass neon-frame fuchsia rounded-2xl p-6 border border-fuchsia-400/10 relative">
+          <h2 class="text-xl font-semibold flex items-center gap-2"><span class="iconify" data-icon="mdi:calendar"></span> Y3S2</h2>
+          <div class="module-grid mt-4 grid grid-cols-1 gap-3">
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">— Content to be added</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Modules and skills for Y3S2 will be populated soon.</p>
+                <div class="chips">
+                  <span class="chip"><span class="iconify" data-icon="mdi:timer-sand"></span> Pending</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Y4S1 (LEFT) -->
+      <div class="timeline-row left">
+        <article id="y4s1" class="semester-card glass neon-frame cyan rounded-2xl p-6 border border-cyan-400/10 relative">
+          <h2 class="text-xl font-semibold flex items-center gap-2"><span class="iconify" data-icon="mdi:calendar"></span> Y4S1</h2>
+          <div class="module-grid mt-4 grid grid-cols-1 gap-3">
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">— Content to be added</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Modules and skills for Y4S1 will be populated soon.</p>
+                <div class="chips">
+                  <span class="chip"><span class="iconify" data-icon="mdi:timer-sand"></span> Pending</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- AUDITED MODULES (CENTER/LEFT) -->
+      <div class="timeline-row center mt-16">
+        <article id="audited" class="semester-card glass neon-frame rounded-2xl p-6 border border-cyan-400/10 relative">
+          <h2 class="text-xl font-semibold flex items-center gap-2">
+            <span class="iconify" data-icon="mdi:book-check"></span>
+            Relevant Modules Audited
+          </h2>
+
+          <div class="module-grid mt-4 grid grid-cols-1 gap-3">
+            <!-- IS434 -->
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS434 Social Analytics and Applications</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Methods to capture and analyse online behaviour across social platforms. Covers web crawling/scraping & social APIs, text mining for topics/sentiment, social network analysis (influencers, communities) and deployment of analytics pipelines on cloud.</p>
+                <div class="chips">
+                  <span class="chip" title="APIs & Crawling"><span class="iconify" data-icon="mdi:api"></span> Social APIs</span>
+                  <span class="chip" title="Web Scraping"><span class="iconify" data-icon="mdi:spider"></span> Scraping</span>
+                  <span class="chip" title="Text Mining & Sentiment"><span class="iconify" data-icon="mdi:text-recognition"></span> NLP</span>
+                  <span class="chip" title="Network Measures & Influence"><span class="iconify" data-icon="mdi:graph"></span> SNA</span>
+                  <span class="chip" title="Cloud Pipeline"><span class="iconify" data-icon="mdi:cloud-outline"></span> AWS</span>
+                  <span class="chip" title="Python/Gephi/Tableau"><span class="iconify" data-icon="mdi:language-python"></span> Tooling</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- IS446 -->
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS446 Managing Customer Relations with Analytics</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Customer‑centric management using analytics across Attract → Convert → Retain → Amaze. Journey mapping, tidy data and dashboarding with Salesforce/BI; service operations and ITSM/ITIL framed for the Asian business context.</p>
+                <div class="chips">
+                  <span class="chip" title="Customer Journey"><span class="iconify" data-icon="mdi:map-marker-path"></span> Journey Maps</span>
+                  <span class="chip" title="Tidy Data"><span class="iconify" data-icon="mdi:table"></span> Tidy Data</span>
+                  <span class="chip" title="Dashboards"><span class="iconify" data-icon="mdi:view-dashboard"></span> Dashboards</span>
+                  <span class="chip" title="Salesforce Objects"><span class="iconify" data-icon="mdi:salesforce"></span> Salesforce</span>
+                  <span class="chip" title="IT Service Mgmt"><span class="iconify" data-icon="mdi:headset"></span> ITIL/ITSM</span>
+                  <span class="chip" title="Asian Context"><span class="iconify" data-icon="mdi:earth"></span> Asia Focus</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- IS459 -->
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS459 Big Data Architecture</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Principles for large‑scale data systems: ingestion, streaming & batch processing, distributed storage, and serving layers. Patterns like Lambda/Kappa; reliability, scalability and cost trade‑offs for analytics platforms.</p>
+                <div class="chips">
+                  <span class="chip" title="Data Ingestion & Streams"><span class="iconify" data-icon="mdi:pipe"></span> Ingestion</span>
+                  <span class="chip" title="Distributed Processing"><span class="iconify" data-icon="mdi:circle-slice-8"></span> Batch/Stream</span>
+                  <span class="chip" title="NoSQL / Lake"><span class="iconify" data-icon="mdi:database"></span> Storage</span>
+                  <span class="chip" title="Platform Patterns"><span class="iconify" data-icon="mdi:chart-timeline-variant-shimmer"></span> Lambda/Kappa</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- IS627 -->
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">IS627 Blockchain Technology</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Foundations of blockchain systems: data structures, consensus mechanisms, smart contracts, security/attacks and the scalability–decentralisation–security trilemma; implementation and maintenance considerations.</p>
+                <div class="chips">
+                  <span class="chip" title="Consensus"><span class="iconify" data-icon="mdi:shield-lock-outline"></span> Consensus</span>
+                  <span class="chip" title="Smart Contracts"><span class="iconify" data-icon="mdi:file-code-outline"></span> Smart Contracts</span>
+                  <span class="chip" title="Blockchain Types & Attacks"><span class="iconify" data-icon="mdi:lan"></span> Types/Attacks</span>
+                  <span class="chip" title="Perf. Trilemma"><span class="iconify" data-icon="mdi:triangle-outline"></span> Trilemma</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- STAT203 -->
+            <div class="module-card" tabindex="0">
+              <div class="module-head flex items-center justify-between">
+                <span class="name">STAT203 Financial Mathematics</span>
+                <span class="chev iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+              <div class="module-body">
+                <p class="desc">Interest theory for pricing and evaluation of financial assets: time‑value maths, annuities, loans & amortisation, term structure & swaps, bonds/yields and risk management via duration/convexity/immunisation.</p>
+                <div class="chips">
+                  <span class="chip" title="Time Value of Money"><span class="iconify" data-icon="mdi:timeline-clock"></span> TVM</span>
+                  <span class="chip" title="Annuities & Cashflows"><span class="iconify" data-icon="mdi:cash"></span> Annuities</span>
+                  <span class="chip" title="Loans & Amortisation"><span class="iconify" data-icon="mdi:calculator"></span> Loans</span>
+                  <span class="chip" title="Bonds & Yields"><span class="iconify" data-icon="mdi:bank"></span> Bonds/Yields</span>
+                  <span class="chip" title="Duration & Convexity"><span class="iconify" data-icon="mdi:vector-curve"></span> Duration</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+    <!-- Connector sparks layer (hook) -->
+    <canvas id="route-sparks" aria-hidden="true"></canvas>
+  </section>
+
+  <!-- FOOTER LINKS (optional quick nav) -->
+  <section class="container mx-auto px-6 pb-16">
+    <div class="flex gap-4 text-sm">
+      <a href="index.html" class="hover:text-cyan-300 inline-flex items-center gap-2"><span class="iconify" data-icon="mdi:arrow-left"></span> Back to Home</a>
+      <a href="projects.html" class="hover:text-cyan-300 inline-flex items-center gap-2">View Projects <span class="iconify" data-icon="mdi:arrow-right"></span></a>
+    </div>
+  </section>
+
+  <!-- Load modules AFTER DOM exists (same as index) -->
+  <script type="module" src="visuals.js"></script>
+  <script type="module" src="main.js"></script>
+  
+  <!-- PAGE-SPECIFIC: simple expand/collapse foundation for module cards -->
+  <script>
+    (function(){
+      const cards = document.querySelectorAll('.module-card');
+      cards.forEach(card => {
+        const head = card.querySelector('.module-head');
+        const body = card.querySelector('.module-body');
+        body.style.maxHeight = '0px';
+        body.style.overflow = 'hidden';
+        body.style.transition = 'max-height 260ms ease';
+        const toggle = () => {
+          const open = card.classList.toggle('open');
+          body.style.maxHeight = open ? body.scrollHeight + 'px' : '0px';
+          const chev = card.querySelector('.chev');
+          if (chev) chev.setAttribute('data-icon', open ? 'mdi:chevron-up' : 'mdi:chevron-down');
+        };
+        head.addEventListener('click', toggle);
+        card.addEventListener('keypress', (e)=>{ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }});
+      });
+      if (window.initJourneySparks) { try { window.initJourneySparks('#route-sparks'); } catch(_){} }
+      if (window.Visuals && typeof Visuals.initRouteSparks === 'function') { try { Visuals.initRouteSparks('#route-sparks'); } catch(_){} }
+    })();
+  </script>
+
+  <script>
+    // === Free-flying fireflies for Learning Journey ===
+    (function(){
+      const sel = '#sparks-canvas';
+      const canvas = document.querySelector(sel);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      let W = 0, H = 0, DPR = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
+      let fireflies = [], rafId = null, paused = false;
+
+      function resize(){
+        const b = canvas.getBoundingClientRect();
+        W = Math.floor(b.width);
+        H = Math.floor(b.height);
+        canvas.width = Math.floor(W * DPR);
+        canvas.height = Math.floor(H * DPR);
+        canvas.style.width = W + 'px';
+        canvas.style.height = H + 'px';
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        spawn();
+      }
+
+      function spawn(){
+        const target = Math.floor(Math.min(120, Math.max(40, (W * H) / 18000)));
+        if (fireflies.length === 0) {
+          for (let i=0;i<target;i++) fireflies.push(makeOne(Math.random()*W, Math.random()*H));
+        } else if (fireflies.length < target) {
+          for (let i=fireflies.length;i<target;i++) fireflies.push(makeOne(Math.random()*W, Math.random()*H));
+        } else if (fireflies.length > target) {
+          fireflies.length = target;
+        }
+      }
+
+      function makeOne(x, y){
+        const speed = 0.25 + Math.random()*0.6; // px per frame
+        const dir = Math.random()*Math.PI*2;
+        return {
+          x, y,
+          vx: Math.cos(dir)*speed,
+          vy: Math.sin(dir)*speed,
+          r: 0.8 + Math.random()*1.8,
+          hue: 170 + Math.random()*140, // cyan→fuchsia range
+          flick: Math.random()*Math.PI*2,
+          drift: (Math.random()*0.004 + 0.001) * (Math.random()<0.5?-1:1)
+        };
+      }
+
+      function step(){
+        if (paused) { rafId = requestAnimationFrame(step); return; }
+        ctx.clearRect(0,0,W,H);
+        ctx.globalCompositeOperation = 'lighter';
+        const t = performance.now()*0.001;
+        for (let i=0;i<fireflies.length;i++){
+          const f = fireflies[i];
+          // gentle perlin-ish wobble via phase drift
+          const ax = Math.cos(t*0.6 + i*0.37) * 0.03;
+          const ay = Math.sin(t*0.5 + i*0.41) * 0.03;
+          f.vx += ax; f.vy += ay;
+          // speed clamp
+          const sp = Math.hypot(f.vx,f.vy); if (sp>0.9){ f.vx*=0.9/sp; f.vy*=0.9/sp; }
+          f.x += f.vx; f.y += f.vy;
+          // wrap around edges (seamless)
+          if (f.x < -5) f.x = W+5; else if (f.x > W+5) f.x = -5;
+          if (f.y < -5) f.y = H+5; else if (f.y > H+5) f.y = -5;
+          // pulsating glow
+          f.flick += f.drift;
+          const pulse = 0.6 + 0.4*Math.sin(f.flick);
+          const r = f.r * (1.1 + 0.9*pulse);
+          const g = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, r*6);
+          const c1 = `hsla(${f.hue}, 95%, 70%, ${0.24*pulse})`;
+          const c2 = `hsla(${f.hue+40}, 95%, 55%, 0.08)`;
+          g.addColorStop(0, c1);
+          g.addColorStop(1, c2);
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(f.x, f.y, r*4, 0, Math.PI*2);
+          ctx.fill();
+        }
+        ctx.globalCompositeOperation = 'source-over';
+        rafId = requestAnimationFrame(step);
+      }
+
+      // pause on blur to save cycles
+      window.addEventListener('visibilitychange', ()=>{ paused = document.hidden; });
+      window.addEventListener('resize', resize, { passive:true });
+
+      // kick off
+      resize();
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(step);
+
+      // Expose minimal handle for other pages if needed
+      window.__journeyFireflies = {
+        stop(){ paused = true; cancelAnimationFrame(rafId); },
+        start(){ if (rafId) cancelAnimationFrame(rafId); paused=false; rafId=requestAnimationFrame(step); },
+        resize
+      };
+    })();
+  </script>
+
+  <!-- Minimal styles that rely on existing CSS tokens/classes in styles.css -->
+  <style>
+    /* central route line */
+    /* ensure nav matches index */
+    .sticky-header { position: fixed; left:0; right:0; top:0; width:100%; }
+    .sticky-header .nav-link{ text-decoration:none; color:var(--link, #e7f6ff); }
+    .sticky-header .nav-link:visited{ color:inherit; }
+    .sticky-header .nav-link:hover{ text-decoration:none; }
+    .sticky-header .nav-link.active{ position:relative; }
+    .sticky-header .nav-link.active::after{ content:""; position:absolute; left:0; right:0; bottom:-6px; height:4px; border-radius:4px; background:linear-gradient(90deg, rgba(34,211,238,.9), rgba(217,70,239,.9)); box-shadow:0 0 18px rgba(34,211,238,.65); }
+
+    .route-rail{ position:absolute; left:50%; top:0; bottom:0; width:2px; background:linear-gradient(to bottom, rgba(34,211,238,0.35), rgba(217,70,239,0.35)); transform:translateX(-50%); filter:drop-shadow(0 0 8px rgba(34,211,238,0.45)); }
+    .timeline{ position:relative; }
+    .timeline-row{ display:flex; align-items:stretch; }
+    .timeline-row.left{ justify-content:flex-start; }
+    .timeline-row.right{ justify-content:flex-end; }
+    .timeline-row.center{ justify-content:center; }
+    .timeline-row .semester-card{ width:min(720px, 100%); }
+    .timeline-row.left .semester-card{ margin-right:8%; }
+    .timeline-row.right .semester-card{ margin-left:8%; }
+
+    /* connector nodes to the rail (purely decorative hooks) */
+    .timeline-row::before{ content:""; position:relative; width:0; height:0; }
+    .timeline-row.left::after, .timeline-row.right::after{
+      content:""; position:absolute; top:24px; left:50%; width:50%; height:2px; transform:translateX(-50%);
+      background: linear-gradient(90deg, rgba(34,211,238,0.6), rgba(217,70,239,0.6));
+      mask: linear-gradient(90deg, #000, transparent);
+      opacity:.8;
+    }
+    .timeline-row.right::after{ left:auto; right:50%; transform:translateX(50%); }
+
+    /* module cards */
+    .module-card{ border:1px solid rgba(34,211,238,0.2); border-radius:12px; padding:12px 14px; background:rgba(10,8,24,0.45); backdrop-filter:blur(4px); color:#e5ecff; }
+    .module-card .module-head{ cursor:pointer; gap:10px; }
+    .module-card .module-head{ min-height:34px; }
+    .module-card .name{ font-size:0.95rem; font-weight:700; letter-spacing:.2px; }
+    .module-card .module-body{ margin-top:6px; }
+    .module-card .module-body{ color:#d9e1ff; }
+    .module-card .chips span{ display:inline-block; font-size:12px; padding:4px 10px; border:1px solid rgba(34,211,238,0.35); border-radius:999px; margin:2px; opacity:.95; }
+    .module-card .desc{ line-height:1.35; margin-bottom:8px; opacity:.95; }
+    .module-card .chips .chip{ transition: box-shadow .2s ease, transform .2s ease; }
+    .module-card .chips .chip:hover{ box-shadow:0 0 12px rgba(34,211,238,.45), 0 0 22px rgba(217,70,239,.25); transform: translateY(-1px); }
+    .module-card.open{ border-color:rgba(34,211,238,0.5); box-shadow:0 0 0 1px rgba(34,211,238,0.25) inset, 0 0 16px rgba(34,211,238,0.35); }
+
+    .semester-card h2{ color:#f6f9ff; }
+    .semester-card{ color:#f0f5ff; }
+
+    /* small screens adjustments */
+    @media (max-width: 768px){
+      .route-rail{ left:12px; transform:none; }
+      .timeline-row.left .semester-card, .timeline-row.right .semester-card{ margin:0 0 0 28px; }
+      .timeline-row.left::after, .timeline-row.right::after{ display:none; }
+    }
+  </style>
+</body>
+</html>

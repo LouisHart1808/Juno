@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Louis Hartawan — Cyberpunk Portfolio</title>
+  <meta name="description" content="Information Systems student • Business Analyst • Data Analyst • AI/ML — cyberpunk single-file starter" />
+  <link rel="preload" href="styles.css" as="style">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+
+  <!-- Minimal base styles: Tailwind Play CDN (no config file) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Iconify (thousands of icons via data-icon attr) -->
+  <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+
+  <!-- Motion One (micro animations) -->
+  <script type="module">
+    import { animate, inView } from "https://cdn.jsdelivr.net/npm/motion@10/+esm";
+    // Simple on-scroll reveal for sections
+    inView("section", ({ target }) => {
+      animate(target, { opacity: [0, 1], transform: ["translateY(16px)", "none"] }, { duration: 0.6 });
+    });
+  </script>
+</head>
+
+<body class="text-slate-100 tracking-tight selection:bg-cyan-400/30">
+  <!-- 3D background canvas (Three.js renders here) -->
+  <canvas id="bg"></canvas>
+  <!-- FX canvases: lines, trails, glow (fixed, full-viewport) -->
+  <canvas id="fx-lines" aria-hidden="true"></canvas>
+  <canvas id="fx-trails" aria-hidden="true"></canvas>
+  <canvas id="fx-glow" aria-hidden="true"></canvas>
+  <canvas id="sparks-canvas" aria-hidden="true"></canvas>
+
+  <!-- NAV -->
+  <header class="sticky-header container mx-auto px-6 py-6 flex items-center justify-between">
+    <a href="#" class="font-semibold">Juno</a>
+    <nav class="flex gap-6 text-sm">
+      <a href="#education" class="nav-link hover:text-cyan-300">Education</a>
+      <a href="#skills" class="nav-link hover:text-cyan-300">Skills</a>
+      <a href="learningJourney.html" class="nav-link hover:text-cyan-300">My Learning Journey</a>
+      <a href="projects.html" class="nav-link hover:text-cyan-300">Projects (WIP)</a>
+    </nav>
+  </header>
+
+  <!-- Curved connectors overlay -->
+  <svg id="conn-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
+  <!-- Moving neon nodes overlay (separate layer) -->
+  <svg id="conn-nodes" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
+
+  <!-- HERO -->
+  <section class="container mx-auto px-6 py-20 md:py-28 relative" id="hero">
+    <div class="max-w-3xl">
+      <p id="greeting" class="text-cyan-200/90 text-sm">Good evening</p>
+      <div class="holo-wrap">
+        <h1 class="mt-2 text-4xl md:text-6xl font-black leading-[1.05] neon">I am Louis Hartawan</h1>
+        <span id="holo" class="holo holo-glow" aria-hidden="true"><i>◈</i></span>
+      </div>
+      <p class="mt-3 text-slate-300/90">B.Sc. (Information Systems) @ Singapore Management University</p>
+      <p class="mt-3 text-slate-300/90">Specialising in <span class="glow-cyan">Business Analytics</span> & <span class="glow-fuchsia">Artificial Intelligence</span></p> 
+      <p class="mt-3 text-slate-300/90">I translate business questions into <span class="glow-cyan">data products</span>, <span class="glow-acid">dashboards</span>, and <span class="glow-fuchsia">ML solutions</span>.</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="learningJourney.html" class="px-5 py-3 rounded-lg glass border border-cyan-400/30 hover:border-cyan-300 text-sm">My Learning Journey</a>
+        <a href="projects.html" class="px-5 py-3 rounded-lg border border-cyan-400/30 hover:border-cyan-300 text-sm">View Projects (WIP)</a>        
+        <a href="#contact" class="px-5 py-3 rounded-lg border border-fuchsia-400/30 hover:border-fuchsia-300 text-sm">Get in touch</a>
+      </div>
+      <div class="mt-6 flex flex-wrap items-center gap-6 text-sm opacity-90">
+        <span class="inline-flex items-center gap-2"><span class="iconify" data-icon="mdi:chart-line"></span> Business Analytics</span>
+        <span class="inline-flex items-center gap-2"><span class="iconify" data-icon="mdi:chart-timeline-variant"></span> Data Analytics &amp; Visualisations</span>
+        <span class="inline-flex items-center gap-2"><span class="iconify" data-icon="mdi:robot"></span> AI / ML / NLP</span>
+        <span class="inline-flex items-center gap-2"><span class="iconify" data-icon="mdi:web"></span> Web Apps</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT (moved up) -->
+  <section id="contact" class="container mx-auto px-6 pt-2 pb-10">
+    <div class="flex items-center gap-4 text-sm">
+      <a class="inline-flex items-center gap-2 hover:text-cyan-300" href="mailto:Louislsl02@gmail.com" aria-label="Email Louis"><span class="iconify" data-icon="mdi:email"></span> Email</a>
+      <a class="inline-flex items-center gap-2 hover:text-cyan-300" href="https://github.com/" target="_blank" rel="noopener" aria-label="GitHub"><span class="iconify" data-icon="mdi:github"></span> GitHub</a>
+      <a class="inline-flex items-center gap-2 hover:text-cyan-300" href="https://www.linkedin.com/in/louishartawan" target="_blank" rel="noopener" aria-label="LinkedIn"><span class="iconify" data-icon="mdi:linkedin"></span> LinkedIn</a>
+    </div>
+  </section>
+
+  <!-- WORKING EXPERIENCE (placeholder) -->
+  <section id="experience" class="container mx-auto px-6 py-14">
+    <h2 class="text-2xl font-bold mb-4">Working Experience</h2>
+    <div class="glass cyber neon-frame cyan rounded-2xl p-6 border border-cyan-400/10 relative">
+      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+        <div>
+          <h3 class="font-semibold text-lg flex items-center gap-2">
+            <span class="iconify" data-icon="mdi:factory"></span>
+            Infineon Technologies — Digital Marketing & Tech Intern
+          </h3>
+          <p class="text-sm text-slate-300/90 mt-1">Singapore • Internal tools, data apps & analytics</p>
+        </div>
+        <div class="text-xs opacity-80 flex flex-wrap gap-2 items-center">
+          <span class="pill"><span class="iconify logo" data-icon="logos:d3"></span>D3.js</span>
+          <span class="pill"><span class="iconify logo" data-icon="simple-icons:googleanalytics"></span>GA4</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:tableau-icon"></span>Tableau</span>
+          <span class="pill"><span class="iconify logo" data-icon="simple-icons:mlflow"></span>ML Lifecycle</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:python"></span>Python</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:pandas-icon"></span>Pandas</span>
+        </div>
+      </div>
+
+      <p class="mt-3 text-sm text-slate-300/90">I built cyberpunk‑slick, data‑driven tools that helped regional teams see patterns faster, decide smarter, and allocate budgets with confidence. Highlights below.</p>
+
+      <!-- Project Cards -->
+      <div class="grid md:grid-cols-3 gap-6 mt-5">
+        <!-- Project 1: DistiViz -->
+        <article class="glass neon-frame rounded-2xl p-5 border border-cyan-400/10 relative">
+          <h4 class="font-semibold flex items-center gap-2">
+            <span class="iconify" data-icon="mdi:chart-box"></span>
+            DistiViz — Distributor Data Visualizer
+          </h4>
+          <p class="mt-2 text-sm text-slate-300/90">Internal interactive web app (D3.js) to explore Applications & Design Registrations (DREGs) across thousands of Excel rows via filters, grouped tables, bar charts and a choropleth map. Exportable slices for hand‑off.</p>
+          <ul class="mt-3 space-y-1 text-sm list-disc list-inside text-slate-300/90">
+            <li>Multi‑filter views by region, distributor, status, confidence, and date windows.</li>
+            <li>Custom charts + tooltips, paginated grouped tables, APAC‑focused processing.</li>
+            <li>Top‑10 distributor spotlight and revenue heatmaps via world map.</li>
+            <li class="opacity-90">Absorbed <em>Campaign Conversion Checker</em> matching flow into one stop DistiViz experience.</li>
+          </ul>
+          <div class="mt-3 flex flex-wrap gap-2 text-xs">
+            <span class="pill"><span class="iconify logo" data-icon="logos:d3"></span>D3.js</span>
+            <span class="pill"><span class="iconify logo" data-icon="logos:javascript"></span>Vanilla JS</span>
+            <span class="pill"><span class="iconify logo" data-icon="mdi:waves"></span>TopoJSON</span>
+            <span class="pill"><span class="iconify logo" data-icon="logos:tableau-icon"></span>CSV/Excel</span>
+          </div>
+        </article>
+
+        <!-- Project 2: Marketing Claims Hypothesis Checker -->
+        <article class="glass neon-frame fuchsia rounded-2xl p-5 border border-cyan-400/10 relative">
+          <h4 class="font-semibold flex items-center gap-2">
+            <span class="iconify" data-icon="mdi:target-account"></span>
+            Marketing Claims Hypothesis Checker
+          </h4>
+          <p class="mt-2 text-sm text-slate-300/90">Analysed marketing datasets (engagement, events, registrations) to validate hypotheses and surface anomalies. Built matching, QA samples, and review workflows to ensure claims are evidence‑backed.</p>
+          <ul class="mt-3 space-y-1 text-sm list-disc list-inside text-slate-300/90">
+            <li>Trend analysis on collateral engagement and webinar participation to inform campaign planning.</li>
+            <li>Quantified optimal marketing effort vs. customer receptivity for smarter budget allocation.</li>
+            <li>Produced executive‑ready summaries and sensitivity checks for decision assurance.</li>
+          </ul>
+          <div class="mt-3 flex flex-wrap gap-2 text-xs">
+            <span class="pill"><span class="iconify logo" data-icon="logos:pandas-icon"></span>Pandas</span>
+            <span class="pill"><span class="iconify logo" data-icon="logos:python"></span>Python</span>
+          </div>
+        </article>
+
+        <!-- Project 3: AI Product Recommender -->
+        <article class="glass neon-frame acid rounded-2xl p-5 border border-cyan-400/10 relative">
+          <h4 class="font-semibold flex items-center gap-2">
+            <span class="iconify" data-icon="mdi:robot-outline"></span>
+            AI Product Recommender (POC)
+          </h4>
+          <p class="mt-2 text-sm text-slate-300/90">Designed a prompt‑driven assistant that maps user intents to relevant Infineon products and collateral, accelerating discovery for internal users.</p>
+          <ul class="mt-3 space-y-1 text-sm list-disc list-inside text-slate-300/90">
+            <li>Feature ideation: embeddings for product taxonomy, scoring for relevance & confidence.</li>
+            <li>Planned signals: past engagement, page paths (GA4), and query semantics.</li>
+            <li>Roadmap includes feedback loops and A/B evaluation against manual search.</li>
+          </ul>
+          <div class="mt-3 flex flex-wrap gap-2 text-xs">
+            <span class="pill"><span class="iconify logo" data-icon="simple-icons:mlflow"></span>ML Lifecycle</span>
+            <span class="pill"><span class="iconify logo" data-icon="logos:python"></span>Python</span>
+          </div>
+        </article>
+      </div>
+
+      <!-- Impact bullets -->
+      <div class="mt-6 text-sm text-slate-300/90">
+        <div class="font-semibold mb-1 flex items-center gap-2"><span class="iconify" data-icon="mdi:lightning-bolt"></span> Impact</div>
+        <ul class="grid md:grid-cols-2 gap-y-1 list-disc list-inside">
+          <li>Faster comprehension: interactive exploration turned thousand‑row spreadsheets into living dashboards.</li>
+          <li>Better planning: insights on engagement and events shaped regional campaign calendars.</li>
+          <li>Efficiency: quantitative effort‑vs‑receptivity analysis guided budget allocation.</li>
+          <li>Observability: GA4 tracking revealed internal navigation patterns and high‑value content.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education" class="container mx-auto px-6 py-14">
+    <h2 class="text-2xl font-bold mb-4">Education</h2>
+    <div id="edu-card" class="glass cyber neon-frame cyan rounded-2xl p-6 border border-cyan-400/10 relative">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+        <div>
+          <h3 class="font-semibold text-lg flex items-center gap-2"><span class="iconify" data-icon="mdi:school-outline"></span> Singapore Management University</h3>
+          <p class="text-sm text-slate-300/90">Bachelor of Science (Information Systems), 2nd Major in Computing Studies</p>
+          <p class="text-sm text-slate-300/90 mt-1">Specialisation: <strong>Business Analytics</strong> & <strong>Artificial Intelligence</strong></p>
+        </div>
+        <div class="text-sm opacity-80">Singapore</div>
+      </div>
+      <div class="mt-4 text-sm text-slate-300/90">
+        <div class="font-semibold mb-1 flex items-center gap-2"><span class="iconify" data-icon="mdi:book-open-page-variant"></span> Relevant Coursework</div>
+        <ul class="grid md:grid-cols-2 gap-y-1 list-disc list-inside">
+          <li>Artificial Intelligence, Machine Learning, Natural Language Processing</li>
+          <li>Business & Financial Analytics</li>
+          <li>CRM Analytics, Data Mining</li>
+          <li>Data Visualisation, Web Development</li>
+        </ul>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6 mt-6">
+      <div class="glass cyber neon-frame acid rounded-2xl p-6 border border-cyan-400/10">
+        <h3 class="font-semibold text-lg flex items-center gap-2">
+          <span class="iconify" data-icon="mdi:google"></span> Google Professional Certificates
+        </h3>
+        <ul class="mt-3 space-y-1 text-sm text-slate-300/90">
+          <li>Data Analytics</li>
+          <li>Advanced Data Analytics</li>
+          <li>Business Intelligence</li>
+          <li>Project Management</li>
+          <li>IT Automation with Python</li>
+          <li>Digital Marketing & E-Commerce</li>
+          <li>Cybersecurity</li>
+        </ul>
+      </div>
+      <div class="glass cyber neon-frame fuchsia rounded-2xl p-6 border border-cyan-400/10">
+        <h3 class="font-semibold text-lg flex items-center gap-2">
+          <span class="iconify" data-icon="mdi:certificate-outline"></span> Heicoders Academy
+        </h3>
+        <ul class="mt-3 space-y-1 text-sm text-slate-300/90">
+          <li>Python Programming and Data Visualisation</li>
+          <li>Applied Machine Learning</li>
+          <li>Data Analytics with SQL and Tableau</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-6 text-sm">
+      <a href="https://www.linkedin.com/in/louishartawan" target="_blank" rel="noopener"
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-cyan-400/30 hover:border-cyan-300">
+        <span class="iconify" data-icon="mdi:linkedin"></span> Verify on LinkedIn
+      </a>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="container mx-auto px-6 py-14">
+    <h2 class="text-2xl font-bold mb-2">Skills & Tech Stack</h2>
+    <div id="skills-top" class="top8-wrap text-sm">
+      <div class="section-sub text-slate-300/90 mb-2">Top 10 — ranked for Data/AI & Web Dev</div>
+      <div class="stack">
+        <span class="pill top8"><span class="rank">1</span><span class="badge brand-python"><span class="iconify logo" data-icon="logos:python"></span></span>Python</span>
+        <span class="pill top8"><span class="rank">2</span><span class="badge brand-sql"><span class="iconify logo" data-icon="logos:mysql"></span></span>SQL (MySQL)</span>
+        <span class="pill top8"><span class="rank">3</span><span class="badge brand-pandas"><span class="iconify logo" data-icon="logos:pandas-icon"></span></span>Pandas</span>
+        <span class="pill top8"><span class="rank">4</span><span class="badge brand-sklearn"><span class="iconify logo" data-icon="simple-icons:scikitlearn"></span></span>scikit-learn</span>
+        <span class="pill top8"><span class="rank">5</span><span class="badge brand-pytorch"><span class="iconify logo" data-icon="logos:pytorch-icon"></span></span>PyTorch</span>
+        <span class="pill top8"><span class="rank">6</span><span class="badge brand-d3"><span class="iconify logo" data-icon="logos:d3"></span></span>D3.js</span>
+        <span class="pill top8"><span class="rank">7</span><span class="badge brand-tableau"><span class="iconify logo" data-icon="logos:tableau-icon"></span></span>Tableau</span>
+        <span class="pill top8"><span class="rank">8</span><span class="badge brand-react"><span class="iconify logo" data-icon="logos:react"></span></span>React</span>
+        <span class="pill top8"><span class="rank">9</span><span class="badge brand-vue"><span class="iconify logo" data-icon="logos:vue"></span></span>Vue.js</span>
+        <span class="pill top8"><span class="rank">10</span><span class="badge brand-javascript"><span class="iconify logo" data-icon="logos:javascript"></span></span>JavaScript</span>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 text-sm mt-6">
+      <!-- Languages -->
+      <div id="skills-lang" class="glass stack-card neon-frame cyan rounded-2xl p-5">
+        <h4 class="font-semibold flex items-center gap-2"><span class="iconify" data-icon="mdi:code-tags"></span> Languages</h4>
+        <div class="stack">
+          <span class="pill"><span class="iconify logo" data-icon="logos:python"></span>Python</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:r-lang"></span>R</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:mysql"></span>SQL (MySQL)</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:javascript"></span>JavaScript</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:php"></span>PHP</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:html-5"></span>HTML</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:css-3"></span>CSS</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:julia"></span>Julia</span>
+          <span class="pill"><span class="iconify logo" data-icon="simple-icons:gnubash"></span>Shell</span>
+        </div>
+      </div>
+
+      <!-- Frameworks & Libraries (Web/App) -->
+      <div id="skills-web" class="glass stack-card neon-frame fuchsia rounded-2xl p-5">
+        <h4 class="font-semibold flex items-center gap-2"><span class="iconify" data-icon="mdi:web"></span> Frameworks & Libraries</h4>
+        <div class="stack">
+          <span class="pill"><span class="iconify logo" data-icon="logos:react"></span>React</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:vue"></span>Vue.js</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:tailwindcss"></span>Tailwind CSS</span>
+          <span class="pill"><span class="iconify logo logo-dark" data-icon="logos:threejs"></span>Three.js</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:electron"></span>Electron.js</span>
+          <span class="pill"><span class="badge brand-streamlit"><span class="iconify logo" data-icon="simple-icons:streamlit"></span></span>Streamlit</span>
+          <span class="pill"><span class="iconify logo logo-dark" data-icon="logos:flask"></span>Flask</span>
+          <span class="pill"><span class="fallback-logo">OS</span>Outsystems</span>
+          <span class="pill" title="Vanta.js"><span class="iconify logo" data-icon="mdi:waves"></span>Vanta.js</span>
+        </div>
+      </div>
+
+      <!-- Data Science & ML Libraries -->
+      <div id="skills-ds" class="glass stack-card neon-frame acid rounded-2xl p-5">
+        <h4 class="font-semibold flex items-center gap-2"><span class="iconify" data-icon="mdi:robot-outline"></span> Data Science & Machine Learning</h4>
+        <div class="stack">
+          <span class="pill"><span class="iconify logo" data-icon="logos:pandas-icon"></span>Pandas</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:numpy"></span>NumPy</span>
+          <span class="pill"><span class="iconify logo" data-icon="simple-icons:scikitlearn"></span>scikit-learn</span>
+          <span class="pill"><span class="fallback-logo">XGB</span>XGBoost</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:pytorch-icon"></span>PyTorch</span>
+          <span class="pill"><span class="fallback-logo">SBN</span>Seaborn</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:matplotlib-icon"></span>Matplotlib</span>
+          <span class="pill"><span class="badge brand-spark"><span class="iconify logo" data-icon="simple-icons:apachespark"></span></span>PySpark</span>
+          <span class="pill"><span class="badge brand-nltk"><span class="iconify logo" data-icon="mdi:translate-variant"></span></span>NLTK</span>
+          <span class="pill"><span class="iconify logo" data-icon="simple-icons:spacy"></span>spaCy</span>
+          <span class="pill"><span class="badge brand-gensim"><span class="iconify logo" data-icon="mdi:graph-outline"></span></span>Gensim</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 text-sm mt-6">
+      <!-- BI & Visualisation -->
+      <div id="skills-bi" class="glass stack-card neon-frame cyan rounded-2xl p-5">
+        <h4 class="font-semibold flex items-center gap-2"><span class="iconify" data-icon="mdi:chart-box"></span> BI & Visualisation</h4>
+        <div class="stack">
+          <span class="pill"><span class="badge brand-powerbi"><span class="iconify logo" data-icon="simple-icons:powerbi"></span></span>Power BI</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:tableau-icon"></span>Tableau</span>
+          <span class="pill"><span class="badge brand-plotly"><span class="iconify logo" data-icon="simple-icons:plotly"></span></span>Plotly</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:d3"></span>D3.js</span>
+          <span class="pill"><span class="badge brand-ga4"><span class="iconify logo" data-icon="simple-icons:googleanalytics"></span></span>GA4</span>
+          <span class="pill"><span class="badge brand-folium"><span class="iconify logo" data-icon="mdi:map"></span></span>Folium</span>
+        </div>
+      </div>
+
+      <!-- Data Platforms & Cloud -->
+      <div id="skills-cloud" class="glass stack-card neon-frame fuchsia rounded-2xl p-5">
+        <h4 class="font-semibold flex items-center gap-2"><span class="iconify" data-icon="mdi:cloud-outline"></span> Platforms & Cloud</h4>
+        <div class="stack">
+          <span class="pill"><span class="iconify logo" data-icon="logos:aws"></span>AWS (S3, EMR)</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:azure-icon"></span>Azure</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:google-cloud"></span>GCP</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:snowflake-icon"></span>Snowflake</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:firebase"></span>Firebase</span>
+        </div>
+      </div>
+
+      <!-- DevOps, Data Eng & Infra -->
+      <div id="skills-devops" class="glass stack-card neon-frame acid rounded-2xl p-5">
+        <h4 class="font-semibold flex items-center gap-2"><span class="iconify" data-icon="mdi:server"></span> DevOps & Data Eng</h4>
+        <div class="stack">
+          <span class="pill"><span class="iconify logo" data-icon="logos:docker-icon"></span>Docker</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:kubernetes"></span>Kubernetes</span>
+          <span class="pill"><span class="badge brand-vercel"><span class="iconify logo" data-icon="simple-icons:vercel"></span></span>Vercel</span>
+          <span class="pill"><span class="badge brand-kong"><span class="iconify logo" data-icon="simple-icons:kong"></span></span>Kong</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:git-icon"></span>Git</span>
+          <span class="pill"><span class="badge brand-mlflow"><span class="iconify logo" data-icon="simple-icons:mlflow"></span></span>MLflow</span>
+          <span class="pill"><span class="badge brand-dbt"><span class="iconify logo" data-icon="simple-icons:dbt"></span></span>dbt (familiar)</span>
+          <span class="pill"><span class="iconify logo" data-icon="logos:hadoop"></span>Hadoop</span>
+          <span class="pill"><span class="badge brand-kafka"><span class="iconify logo" data-icon="simple-icons:apachekafka"></span></span>Kafka</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="container mx-auto px-6 py-14">
+    <h2 class="text-2xl font-bold mb-4">Projects</h2>
+    <div class="glass cyber neon-frame cyan rounded-2xl p-6 border border-cyan-400/10 relative">
+      <article class="glass neon-frame rounded-2xl p-6 border border-cyan-400/10 relative">
+        <h3 class="font-semibold">Coming Soon</h3>
+        <p class="mt-2 text-sm text-slate-300/90">Interactive dashboards, ML explainability, and analytics pipelines.</p>
+      </article> 
+    </div>
+  </section>
+
+
+  <!-- Load modules AFTER DOM exists (Backup.html behaviour) -->
+  <script type="module" src="visuals.js"></script>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
